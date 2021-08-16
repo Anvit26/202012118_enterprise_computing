@@ -1,6 +1,6 @@
 # 202012118_enterprise_computing
 
-* Lab0 *
+* # Lab0 
 
 - The state of election is stored in three objects candidates, votes and casted. They get updated when any respective event occurs on them. As it is not connected with databse, data does not persist when server starts.
 - The code is divided into two main group view and controller.
