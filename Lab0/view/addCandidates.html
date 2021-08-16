@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Candidates-Poll Simulator</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <div>
+        <h1>Add Candidates</h1>
+        <p>Candidate Name: 
+        <input type="text" id="can_id" name="can_id" placeholder="Candidates Name"/></p>
+        <br/>
+        <button type="button" 
+        onclick="addCandidate(event)"
+        >Add</button>
+        <p><a href="./home.html">Home</a></p>
+    </div>
+    <script>
+        function addCandidate(e){
+            e.preventDefault();
+            const data = {name:($("#can_id").val())}
+            const url = 'http://localhost:5000/addcandidates';
+            const options = {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {'Content-Type': 'application/json'}
+            }
+            fetch(url, options)
+                .then(res => res.json())
+                .then(res => console.log(res))
+                .then(alert(`${data.name} Added`))
+        }
+    </script>
+</body>
+</html>

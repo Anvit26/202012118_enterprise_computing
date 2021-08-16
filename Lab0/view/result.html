@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result-Poll Simulator</title>
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+    <form>
+    <div>
+        <h1>Poll Result</h1>
+        <div id="result">
+
+        </div>
+        <br/>
+        <p><a href="./home.html">Home</a></p>
+    </div>
+    <script>
+        let data;
+        getCandidates();
+        function getCandidates(){
+            const url = "http://localhost:5000/getResult";
+            fetch(url)
+                .then(res => res.json())
+                .then(res => data = res)
+                .then(res =>{appendData()})
+        }
+
+        function appendData() {
+                document.getElementById("result").innerHTML = "";
+                $("#result").append(`<label for="${data.msg.one.name}">Won: ${data.msg.one.name} (${data.msg.one.vote}) </label><br>`);
+                $("#result").append(`<label for="${data.msg.two.name}">Lost: ${data.msg.two.name} (${data.msg.two.vote}) </label><br>`);
+        };
+    </script>
+    </form>
+</body>
+</html>

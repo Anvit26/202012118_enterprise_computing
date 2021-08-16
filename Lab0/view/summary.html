@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Summary-Poll Simulator</title>
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+    <form>
+    <div>
+        <h1>Poll Report</h1>
+        <div id="result">
+
+        </div>
+        <br/>
+        <p><a href="./home.html">Home</a></p>
+    </div>
+    <script>
+        let data;
+        getCandidates();
+        function getCandidates(){
+            const url = "http://localhost:5000/getReport";
+            fetch(url)
+                .then(res => res.json())
+                .then(res => data = res)
+                .then(res =>{appendData()})
+        }
+
+        function appendData() {
+                document.getElementById("result").innerHTML = "";
+                const candidates = data.msg.candidates;
+                const votes = data.msg.votes; 
+                for(let i=0;i<candidates.length;i++){
+                    $("#result").append(
+                    `<label for="${candidates[i]}">${candidates[i]}: ${votes[i]} </label><br>`
+                );
+                }
+        };
+    </script>
+    </form>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vote-Poll Simulator</title>
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+    <form>
+    <div>
+        <h1>Vote</h1>
+        <p>Student ID: <input type="text" name="std_id" id="std_id" placeholder="Voter ID"/></p>
+        <div id="can_radio">
+
+        </div>
+        <br/>
+        <button onclick="castVote(event)">Vote</button>
+        <p><a href="./home.html">Home</a></p>
+    </div>
+    <script>
+        let data;
+        getCandidates();
+        function getCandidates(){
+            const url = "http://localhost:5000/getcandidates";
+            fetch(url)
+                .then(res => res.json())
+                .then(res => data = res)
+                .then(res =>{appendData()})
+                // .then(alert('vote now'))
+        }
+
+        function appendData() {
+                document.getElementById("can_radio").innerHTML = "";
+                const candidates = data.msg;
+                console.log(candidates);
+                candidates.forEach(function(candidate){
+                $("#can_radio").append(
+                    `<input type ='radio' name='vote_val' value='${candidate}' />
+                    <label for="${candidate}">${candidate}</label><br>`
+                );
+            });
+        };
+    </script>
+    <script>
+        function castVote(e){
+            e.preventDefault();
+            const data = {
+                name:($("#std_id").val()),
+                candidate:$("input[name='vote_val']:checked").val()
+            }
+            if(!data.name ||!data.candidate){
+                alert("Plese Enter All Data");
+                return;
+            }
+
+            const url = 'http://localhost:5000/castVote';
+            const options = {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {'Content-Type': 'application/json'}
+            }
+            fetch(url, options)
+                .then(res => res.json())
+                .then(res =>{
+                    if(res.msg.status == "sucess"){
+                        alert(`${data.name} , your vote has been recorded successfully`)
+                    }else{
+                        alert(`${data.name}  ,you have already voted!`)
+                    }
+                })
+                
+        }
+    </script>
+    </form>
+</body>
+</html>
